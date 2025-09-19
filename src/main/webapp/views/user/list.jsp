@@ -1,16 +1,42 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ThanhHiep
-  Date: 9/19/2025
-  Time: 4:21 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
 </head>
 <body>
-
+<div>
+    <h1>User Management</h1>
+    <h2>
+        <a href="${pageContext.request.contextPath}/users?action=new">Add New User</a>
+        <a href="${pageContext.request.contextPath}/users">List All Users</a>
+    </h2>
+    <h2>List Users</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Actions</th>
+        </tr>
+        <c:forEach var="user" items="${listUser}">
+            <tr>
+                <td><c:out value="${user.id}"/></td>
+                <td><c:out value="${user.name}"/></td>
+                <td><c:out value="${user.email}"/></td>
+                <td><c:out value="${user.gender}"/></td>
+                <td>
+                    <a href="${pageContext.request.contextPath}/users?action=edit&id=<c:out value='${user.id}' />">Edit</a>
+                    <a href="${pageContext.request.contextPath}/users?action=delete&id=<c:out value='${user.id}' />">Delete</a>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
 </body>
 </html>

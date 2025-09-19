@@ -1,16 +1,19 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ThanhHiep
-  Date: 9/19/2025
-  Time: 4:22 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" isErrorPage="true"%>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Error</title>
 </head>
 <body>
+<% if(response.getStatus() == 500){ %>
+<font color="red">Error: <%=exception.getMessage() %></font><br>
 
+<%@ include file="/views/user/add.jsp"%>
+<%}else {%>
+Hi There, error code is <%=response.getStatus() %><br>
+Please go to <a href="${pageContext.request.contextPath}/users">home page</a>
+<%} %>
 </body>
 </html>
