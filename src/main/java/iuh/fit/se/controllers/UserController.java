@@ -1,8 +1,12 @@
 package iuh.fit.se.controllers;
 
+import iuh.fit.se.daos.UserDAO;
+import iuh.fit.se.daos.impl.UserDaoImpl;
+import iuh.fit.se.entities.User;
 import iuh.fit.se.utils.EntityManagerFactoryUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
+
 @WebServlet(name = "userController", urlPatterns = {"/users", "/users*"})
 public class UserController extends HttpServlet {
     @Override
@@ -53,7 +59,7 @@ public class UserController extends HttpServlet {
         }
     }
     private void handleShowRegisterForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        RequestDispatcher dispatcher = req.getRequestDispatcher("views/user/add.jsp");
     }
     private void handleDeleteUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -62,10 +68,15 @@ public class UserController extends HttpServlet {
 
     }
     private void handleShowUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try(EntityManager entityManager = EntityManagerFactoryUtil.getEntityManager()
-
+        try(EntityManager entityManager = EntityManagerFactoryUtil.getEntityManager();
         ) {
+            UserDAO userDAO = new UserDaoImpl(entityManager);
+            List<User> listUser = userDAO.findAll();
 
+            req.setAttribute("listUser", listUser);
+            req.getRequestDispatcher("views/user/index.jsp").forward(req, resp);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void handleAddUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
